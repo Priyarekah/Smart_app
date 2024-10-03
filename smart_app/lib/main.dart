@@ -192,41 +192,24 @@ class BigCard extends StatelessWidget {
   }
 }
 
-// Search page
-class SearchPage extends StatelessWidget {
+// SearchPage widget
+class MainSearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Full-screen layout with images at the top, center, and bottom
     return Scaffold(
       body: Stack(
         children: [
-          // Use a Column to arrange the top, center, and bottom images
-          Column(
-            children: [
-              // Top image
-              Expanded(
-                flex: 1,
-                child: Image.asset(
-                  'assets/images/top.png', // Top image
-                  height: 500,
-                  width: 400, // Fixed size for the top image
-                ),
-              ),
-
-              // Button placed at the bottom-right corner
-              Positioned(
-                bottom: 10,
-                right: 20,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Navigate to the login page when button is clicked
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SearchPage()));
-                  },
-                  child: const Text('Get Started'), // Button label
-                ),
-              ),
-            ],
+          // Button to navigate to SearchPage
+          ElevatedButton(
+            onPressed: () {
+              // Navigate to SearchPage when button is clicked
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchPage()),
+              );
+            },
+            child: const Text('Go to Search Page'), // Button label
           ),
         ],
       ),
@@ -238,8 +221,24 @@ class SearchPage extends StatelessWidget {
 class FavouritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: Text('Favourites Page Placeholder')); // Placeholder text
+    // Full-screen layout with images at the top, center, and bottom
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Button to navigate to SearchPage
+          ElevatedButton(
+            onPressed: () {
+              // Navigate to SearchPage when button is clicked
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchPage()),
+              );
+            },
+            child: const Text('Go to Search Page'), // Button label
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -247,7 +246,23 @@ class FavouritesPage extends StatelessWidget {
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: Text('Settings Page Placeholder')); // Placeholder text
+    // Full-screen layout with images at the top, center, and bottom
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Button to navigate to SearchPage
+          ElevatedButton(
+            onPressed: () {
+              // Navigate to SearchPage when button is clicked
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchPage()),
+              );
+            },
+            child: const Text('Go to Search Page'), // Button label
+          ),
+        ],
+      ),
+    );
   }
 }

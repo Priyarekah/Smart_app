@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'search_page.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -32,6 +33,9 @@ class LoginPage extends StatelessWidget {
             // Submit button
             ElevatedButton(
               onPressed: () {
+                // Navigate to the login page when button is clicked
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchPage()));
                 // Add your registration logic here
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Successfully login')),

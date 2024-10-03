@@ -1,6 +1,8 @@
+import 'dart:async'; // Import for Completer
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart'; // To open the Google Maps URL
 import 'package:geocoding/geocoding.dart'; // To convert address to lat/lng using geocoding
+import 'package:google_maps_flutter/google_maps_flutter.dart'; // Ensure you have this package for Google Maps
 
 class SearchPage extends StatefulWidget {
   @override
@@ -10,9 +12,12 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _locationController =
       TextEditingController(); // Controller for location input
+  late GoogleMapController _mapController; // Controller for the Google Map
+  LatLng _currentPosition =
+      LatLng(1.3521, 103.8198); // Initial position for Singapore
   String _googleMapsUrl = ''; // To store generated Google Maps URL
 
-  // Function to generate Google Maps link
+  // Function to generate Google Maps link and move the map
   Future<void> _generateGoogleMapsLink() async {
     String location = _locationController.text;
 
@@ -31,6 +36,11 @@ class _SearchPageState extends State<SearchPage> {
         final lat = locations[0].latitude;
         final lng = locations[0].longitude;
 
+        // Update current position on the map
+        setState(() {
+          _currentPosition = LatLng(lat, lng);
+        });
+
         // Generate the Google Maps URL using the lat/lng
         setState(() {
           _googleMapsUrl =
@@ -39,6 +49,9 @@ class _SearchPageState extends State<SearchPage> {
 
         // Open the Google Maps URL
         await _openMapsLink();
+
+        // Move the camera to the new position
+        _mapController.animateCamera(CameraUpdate.newLatLng(_currentPosition));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Location not found')),
@@ -64,28 +77,35 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Search Page')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Input for starting location
-            TextField(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
               controller: _locationController,
               decoration: InputDecoration(
                 labelText: 'Enter Starting Location',
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 20),
-
-            // Button to open Google Maps
-            ElevatedButton(
-              onPressed: _generateGoogleMapsLink,
-              child: const Text('Find on Google Maps'),
+          ),
+          ElevatedButton(
+            onPressed: _generateGoogleMapsLink,
+            child: const Text('Find on Google Maps'),
+          ),
+          Expanded(
+            child: GoogleMap(
+              mapType: MapType.hybrid,
+              initialCameraPosition: CameraPosition(
+                target: _currentPosition,
+                zoom: 12.0,
+              ),
+              onMapCreated: (GoogleMapController controller) {
+                _mapController = controller;
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -95,4 +115,10 @@ class _SearchPageState extends State<SearchPage> {
     _locationController.dispose();
     super.dispose();
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: SearchPage(),
+  ));
 }

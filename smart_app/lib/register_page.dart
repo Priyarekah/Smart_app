@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'search_page.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -51,6 +52,10 @@ class RegisterPage extends StatelessWidget {
             // Submit button
             ElevatedButton(
               onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchPage()),
+                );
                 // Add your registration logic here
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Registration Submitted')),
